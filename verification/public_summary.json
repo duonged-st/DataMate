@@ -1,0 +1,12 @@
+{
+  "split": "Public Test",
+  "businesses": 14,
+  "questions": 1000,
+  "source_files": 80,
+  "xlsx_sheets": 136,
+  "sqlite_tables": 79,
+  "rows": 1321433,
+  "unmapped_sources": [],
+  "parse_failures": [],
+  "loader_warnings": 0
+}

@@ -1,0 +1,12 @@
+{
+  "split": "Training",
+  "businesses": 30,
+  "questions": 3000,
+  "source_files": 128,
+  "xlsx_sheets": 302,
+  "sqlite_tables": 177,
+  "rows": 3989271,
+  "unmapped_sources": [],
+  "parse_failures": [],
+  "loader_warnings": 0
+}

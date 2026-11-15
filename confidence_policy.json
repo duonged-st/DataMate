@@ -1,0 +1,6 @@
+{
+  "format_version": 1,
+  "confidence_source": "llama_cpp_token_logprob_geometric_mean",
+  "missing_confidence_policy": "keep_original",
+  "threshold": null
+}

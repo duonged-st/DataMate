@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "businesses": 14,
+  "answers_validated": 14,
+  "logs_validated": 14,
+  "model_calls_simulated": 14,
+  "checks": [
+    "SQLite readonly authorization",
+    "valid BTC output",
+    "repair after SQL error",
+    "Excel mixed-locale currency",
+    "chained unit factors",
+    "T\u1ebft period",
+    "README and split rules in prompt"
+  ],
+  "backend": "Scripted localhost endpoint returning SQL fixtures. Scores validate execution and formatting only. Real Qwen and GPU Docker are pending."
+}

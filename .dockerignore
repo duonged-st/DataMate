@@ -1,0 +1,7 @@
+**/__pycache__
+**/*.pyc
+.datamate_cache
+result
+*.ipynb
+*.tar
+*.tar.gz

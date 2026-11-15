@@ -1,0 +1,20 @@
+{
+  "train": {
+    "path": "data/train.zip",
+    "source": "DataMate BTC Training ZIP",
+    "bytes": 128118095,
+    "sha256": "c1adbc654a301c30e4cf20b55d301381025f49db1162d88322b552d7472fea01",
+    "questions": 3000,
+    "answers": 3000,
+    "businesses": 30
+  },
+  "fine_tuning": false,
+  "synthetic_data": false,
+  "validation": {
+    "source": "Same 80 Training question IDs as V4.2",
+    "manifest": "dev_80.jsonl",
+    "questions": 80,
+    "sha256": "e868eb50a96cc1200dbdb020acffae431db0c8e45922d4de133b07dedde06fd5",
+    "measured_accuracy": null
+  }
+}
