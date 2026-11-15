@@ -12,7 +12,7 @@ from contextlib import closing
 
 from .abstention import CONFIDENCE_SOURCE
 from .answer import ALLOWED_TYPES, btc_answer_row
-from .business_sql import basic_sales, debt_query, sales_totals
+from .business_sql import basic_sales, best_sellers, cancellation_rate, debt_query, filtered_revenue, sales_totals
 from .data import open_readonly
 from .normalize import as_date, as_number, key
 from .periods import DatePredicateError, validate_date_predicates
@@ -253,7 +253,8 @@ def infer(q, path, catalog, readme, context, client, question_timeout=120, log_c
         attempts.append({"source": "catalog_evidence", "missing_data": gap})
     rule = None
     if final is None and catalog.get("tables"):
-        rule = (sales_query(q, catalog, products) or basic_sales(q, catalog, products)
+        rule = (cancellation_rate(q, catalog) or sales_query(q, catalog, products) or basic_sales(q, catalog, products)
+                or best_sellers(q, catalog, products) or filtered_revenue(q, catalog, products)
                 or sales_totals(q, catalog, products) or debt_query(q, catalog))
     if rule:
         kind, sql = rule

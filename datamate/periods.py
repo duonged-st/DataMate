@@ -3,7 +3,7 @@
 import re
 from datetime import date, timedelta
 
-from .normalize import key
+from .normalize import identifier_key, key
 from .sql_rules import month_range
 
 MONTH = re.compile(r"\bthang[s]? (\d{1,2}) (?:nam )?(\d{4})\b")
@@ -15,7 +15,8 @@ DATE_LITERAL_CALL = re.compile(r"\b(?:date|datetime)\s*\(\s*'((?:[^']|'')*)'\s*[
 BARE_COLUMN = re.compile(r"(?:" + IDENT + r"\s*\.\s*)?" + IDENT)
 EQUAL_LITERAL = re.compile(r"""\s*(?:==|=|IS\b)\s*(['"])(\d{4}-\d{2}(?:-\d{2})?)\1""", re.I)
 LITERAL_OR_COMMENT = re.compile(r"""'(?:''|[^'])*'|"(?:""|[^"])*"|`(?:``|[^`])*`|\[[^\]]*\]|--[^\n]*|/\*[\s\S]*?\*/""")
-ORDER_ID = {"ma don", "ma don hang", "ma hoa don", "ma bill", "ma khach", "ma khach hang", "ma hang", "ma san pham"}
+ORDER_ID = {"ma don", "ma don hang", "ma hoa don", "ma bill", "order id", "ma giao dich", "ma chung tu",
+            "ma khach", "ma khach hang", "ma hang", "ma hang hoa", "ma san pham"}
 
 
 class DatePredicateError(ValueError):
@@ -104,7 +105,7 @@ def validate_date_predicates(q, sql, catalog):
             continue
         column = re.split(r"\s*\.\s*", function[1])[-1].strip('"`[]')
         name = key(column)
-        if name in ORDER_ID and name not in date_columns:
+        if identifier_key(column) in ORDER_ID and name not in date_columns:
             raise DatePredicateError(f"DATE_FILTER: {column} is an ID, not a transaction date. Join the source with the real date.")
         condition = EQUAL_LITERAL.match(sql, function.end())
         if condition and len(condition[2]) == 7:

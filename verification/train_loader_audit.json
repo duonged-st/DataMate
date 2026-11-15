@@ -1705,6 +1705,9 @@
             "range": [
               "2025-02-01",
               "2026-06-24"
+            ],
+            "timestamp_examples": [
+              "2025-02-01 06:00:25"
             ]
           },
           {
@@ -2251,6 +2254,9 @@
             "range": [
               "2025-02-01",
               "2026-09-14"
+            ],
+            "timestamp_examples": [
+              "2025-02-01 06:03:42"
             ]
           },
           {
@@ -2899,6 +2905,9 @@
             "range": [
               "2025-02-01",
               "2026-09-14"
+            ],
+            "timestamp_examples": [
+              "2025-02-01 06:03:42"
             ]
           },
           {
@@ -2930,6 +2939,42 @@
       }
     ],
     "joins": [
+      {
+        "left": [
+          "danhsachhoadonchitiet",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "soquy",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "danhsachhoadonchitiet",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "soquy",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 0.97
+      },
       {
         "left": [
           "baocaotonkho",
@@ -3016,18 +3061,6 @@
       },
       {
         "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonchitiet",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
           "danhsachhoadonchitiet",
           "Mã hàng"
         ],
@@ -3037,30 +3070,6 @@
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
-      },
-      {
-        "left": [
-          "danhsachhoadonchitiet",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "soquy",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 0.94
-      },
-      {
-        "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "soquy",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; check cardinality",
-        "overlap": 0.931
       },
       {
         "left": [
@@ -3556,6 +3565,9 @@
             "range": [
               "2025-01-01",
               "2026-05-29"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:20:48"
             ]
           },
           {
@@ -4247,6 +4259,18 @@
     "joins": [
       {
         "left": [
+          "danhsachhoadonchitiet",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
           "baocaotonkho",
           "Mã hàng"
         ],
@@ -4325,18 +4349,6 @@
         "right": [
           "danhsachsanpham",
           "Mã hàng"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonchitiet",
-          "Mã hóa đơn"
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
@@ -4639,6 +4651,9 @@
             "range": [
               "2025-01-01",
               "2026-08-05"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:09:10"
             ]
           },
           {
@@ -5287,6 +5302,9 @@
             "range": [
               "2025-01-01",
               "2026-08-05"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:09:10"
             ]
           },
           {
@@ -5393,7 +5411,19 @@
           "dulieubanhang_danhsachhoadon",
           "Mã hóa đơn"
         ],
-        "confidence": "sample overlap; one side unique in sample",
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "dulieubanhang_soquy",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "dulieubanhang_danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
         "overlap": 1.0
       },
       {
@@ -5551,18 +5581,6 @@
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 0.855
-      },
-      {
-        "left": [
-          "dulieubanhang_danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "dulieubanhang_soquy",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; check cardinality",
-        "overlap": 0.838
       },
       {
         "left": [
@@ -5777,7 +5795,8 @@
             "name": "ID SP",
             "type": "TEXT",
             "kind": "text",
-            "note": "mã hàng"
+            "note": "mã hàng",
+            "pk": false
           },
           {
             "name": "Ma don",
@@ -5853,7 +5872,8 @@
             "name": "Số KH",
             "type": "TEXT",
             "kind": "text",
-            "note": "mã khách (trống nếu khách lẻ)"
+            "note": "mã khách (trống nếu khách lẻ)",
+            "pk": false
           },
           {
             "name": "Xử lý",
@@ -6173,7 +6193,8 @@
             "name": "SKU",
             "type": "TEXT",
             "kind": "text",
-            "note": "mã hàng"
+            "note": "mã hàng",
+            "pk": false
           },
           {
             "name": "Hình ảnh",
@@ -6323,6 +6344,9 @@
             "range": [
               "2025-01-01",
               "2026-08-19"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:03:59"
             ]
           },
           {
@@ -6354,7 +6378,8 @@
             "name": "Số HĐ",
             "type": "TEXT",
             "kind": "text",
-            "note": "mã đơn"
+            "note": "mã đơn",
+            "pk": false
           }
         ]
       },
@@ -6422,8 +6447,56 @@
           "don_hang",
           "Mã chứng từ"
         ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "chi_tiet_don",
+          "ID SP"
+        ],
+        "right": [
+          "san_pham",
+          "SKU"
+        ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
+      },
+      {
+        "left": [
+          "chi_tiet_don",
+          "Ma don"
+        ],
+        "right": [
+          "thanh_toan",
+          "Số HĐ"
+        ],
+        "confidence": "sample overlap; one side unique in sample",
+        "overlap": 0.949
+      },
+      {
+        "left": [
+          "don_hang",
+          "Mã chứng từ"
+        ],
+        "right": [
+          "thanh_toan",
+          "Số HĐ"
+        ],
+        "confidence": "sample overlap; check cardinality",
+        "overlap": 0.938
+      },
+      {
+        "left": [
+          "don_hang",
+          "Số KH"
+        ],
+        "right": [
+          "khach_hang",
+          "ma_kh"
+        ],
+        "confidence": "sample overlap; one side unique in sample",
+        "overlap": 0.766
       }
     ],
     "warnings": []
@@ -7012,7 +7085,18 @@
             "name": "DonVi",
             "type": "TEXT",
             "kind": "text",
-            "note": "đơn vị tính"
+            "note": "đơn vị tính",
+            "examples": [
+              "bình",
+              "cây",
+              "cái",
+              "m3",
+              "bao",
+              "kg",
+              "thùng",
+              "cuộn",
+              "viên"
+            ]
           },
           {
             "name": "Ngày mua",
@@ -8954,6 +9038,9 @@
             "range": [
               "2025-01-01",
               "2026-05-20"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:13:20"
             ]
           },
           {
@@ -9012,7 +9099,18 @@
             "name": "DonVi",
             "type": "TEXT",
             "kind": "text",
-            "note": "đơn vị tính"
+            "note": "đơn vị tính",
+            "examples": [
+              "cây",
+              "bình",
+              "cái",
+              "m3",
+              "bao",
+              "kg",
+              "thùng",
+              "cuộn",
+              "viên"
+            ]
           },
           {
             "name": "Số lượng hàng",
@@ -10675,6 +10773,9 @@
             "range": [
               "2025-01-01",
               "2026-07-13"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:06:11"
             ]
           },
           {
@@ -11493,6 +11594,30 @@
     "joins": [
       {
         "left": [
+          "danhsachhoadonchitiet",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "danhsachhoadonchitietlo",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
           "baocaotonkho",
           "Mã hàng"
         ],
@@ -11631,30 +11756,6 @@
         "right": [
           "danhsachthuoc",
           "Mã hàng"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonchitiet",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonchitietlo",
-          "Mã hóa đơn"
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
@@ -12238,6 +12339,9 @@
             "range": [
               "2025-01-01",
               "2026-06-12"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 07:05:17"
             ]
           },
           {
@@ -13038,6 +13142,30 @@
     "joins": [
       {
         "left": [
+          "danhsachhoadonchitiet",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "danhsachhoadonchitietlo",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
           "baocaotonkho",
           "Mã hàng"
         ],
@@ -13164,30 +13292,6 @@
         "right": [
           "danhsachthuoc",
           "Mã hàng"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonchitiet",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonchitietlo",
-          "Mã hóa đơn"
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
@@ -14961,7 +15065,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 1,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -14991,8 +15097,12 @@
           {
             "name": "NgayKhaiTruong",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2021-08-15",
+              "2021-08-15"
+            ]
           }
         ]
       },
@@ -15003,7 +15113,13 @@
             "file": "pos.sqlite"
           }
         ],
-        "rows": 64149,
+        "notes": {
+          "SLQuyDoi": "**Dòng hàng**: `chi_tiet_don.TriGia` là thành tiền của dòng (đã trừ giảm giá dòng); `chi_tiet_don.SLQuyDoi` là số lượng đã đổi ra đơn vị cơ bản.",
+          "TriGia": "**Dòng hàng**: `chi_tiet_don.TriGia` là thành tiền của dòng (đã trừ giảm giá dòng); `chi_tiet_don.SLQuyDoi` là số lượng đã đổi ra đơn vị cơ bản.",
+          "GiaVonLucBan": "**Giá vốn**: `chi_tiet_don.GiaVonLucBan` là giá vốn một đơn vị bán."
+        },
+        "rows": 62941,
+        "duplicates": 1208,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15035,7 +15151,18 @@
             "name": "DonViTinh",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "viên",
+              "chai",
+              "gói",
+              "hộp",
+              "vỉ",
+              "tuýp",
+              "lọ",
+              "cái",
+              "ống"
+            ]
           },
           {
             "name": "SL",
@@ -15046,14 +15173,25 @@
           {
             "name": "SLQuyDoi",
             "type": "INTEGER",
-            "kind": "text",
-            "note": ""
+            "kind": "quantity",
+            "note": "**Dòng hàng**: `chi_tiet_don.TriGia` là thành tiền của dòng (đã trừ giảm giá dòng); `chi_tiet_don.SLQuyDoi` là số lượng đã đổi ra đơn vị cơ bản."
           },
           {
             "name": "GiaDonVi",
             "type": "INTEGER",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "800",
+              "1400",
+              "500",
+              "1300",
+              "1000",
+              "600",
+              "2000",
+              "55000",
+              "10000"
+            ]
           },
           {
             "name": "ChietKhau",
@@ -15065,13 +15203,13 @@
             "name": "TriGia",
             "type": "INTEGER",
             "kind": "money",
-            "note": ""
+            "note": "**Dòng hàng**: `chi_tiet_don.TriGia` là thành tiền của dòng (đã trừ giảm giá dòng); `chi_tiet_don.SLQuyDoi` là số lượng đã đổi ra đơn vị cơ bản."
           },
           {
             "name": "GiaVonLucBan",
             "type": "INTEGER",
-            "kind": "text",
-            "note": ""
+            "kind": "money",
+            "note": "**Giá vốn**: `chi_tiet_don.GiaVonLucBan` là giá vốn một đơn vị bán."
           }
         ]
       },
@@ -15082,7 +15220,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 64422,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15113,13 +15253,13 @@
           {
             "name": "SLQuyDoi",
             "type": "INTEGER",
-            "kind": "text",
+            "kind": "quantity",
             "note": ""
           },
           {
             "name": "SLTraQuyDoi",
             "type": "INTEGER",
-            "kind": "text",
+            "kind": "quantity",
             "note": ""
           }
         ]
@@ -15131,7 +15271,11 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {
+          "DonGiaNhap": "**Nhập hàng**: `chi_tiet_nhap.DonGiaNhap` là giá nhập một đơn vị, theo đơn vị nhập của dòng; `phieu_nhap.TongGiaTriNhap` là tổng tiền của cả phiếu nhập."
+        },
         "rows": 2953,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15163,7 +15307,17 @@
             "name": "DonViTinh",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "hộp",
+              "chai",
+              "tuýp",
+              "lọ",
+              "lốc",
+              "cái",
+              "gói",
+              "viên"
+            ]
           },
           {
             "name": "SL",
@@ -15175,7 +15329,7 @@
             "name": "DonGiaNhap",
             "type": "INTEGER",
             "kind": "text",
-            "note": ""
+            "note": "**Nhập hàng**: `chi_tiet_nhap.DonGiaNhap` là giá nhập một đơn vị, theo đơn vị nhập của dòng; `phieu_nhap.TongGiaTriNhap` là tổng tiền của cả phiếu nhập."
           },
           {
             "name": "MaLo",
@@ -15187,8 +15341,12 @@
           {
             "name": "HanSuDung",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-03-02",
+              "2029-06-05"
+            ]
           }
         ]
       },
@@ -15199,7 +15357,13 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {
+          "MaCaLam": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả).",
+          "MaKhuyenMai": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả).",
+          "TongThanhToan": "**Công nợ**: mỗi lần khách trả tiền cho một đơn là một dòng, `thanh_toan.SoTienThu` là số tiền trả lần đó; `don_hang.TongThanhToan` là số khách phải trả cho cả đơn."
+        },
         "rows": 33630,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15239,7 +15403,7 @@
             "name": "MaCaLam",
             "type": "TEXT",
             "kind": "text",
-            "note": "",
+            "note": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả).",
             "pk": false
           },
           {
@@ -15256,25 +15420,42 @@
           {
             "name": "ThoiGianLap",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-01-01",
+              "2026-06-28"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:03:04"
+            ]
           },
           {
             "name": "NgayLap",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-01-01",
+              "2026-06-28"
+            ]
           },
           {
             "name": "TinhTrang",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "completed",
+              "cancelled",
+              "returned",
+              "shipping"
+            ]
           },
           {
             "name": "TongTienHang",
             "type": "INTEGER",
-            "kind": "text",
+            "kind": "money",
             "note": ""
           },
           {
@@ -15286,7 +15467,7 @@
           {
             "name": "PhiVanChuyen",
             "type": "INTEGER",
-            "kind": "text",
+            "kind": "money",
             "note": ""
           },
           {
@@ -15299,12 +15480,12 @@
             "name": "TongThanhToan",
             "type": "INTEGER",
             "kind": "money",
-            "note": ""
+            "note": "**Công nợ**: mỗi lần khách trả tiền cho một đơn là một dòng, `thanh_toan.SoTienThu` là số tiền trả lần đó; `don_hang.TongThanhToan` là số khách phải trả cho cả đơn."
           },
           {
             "name": "KhachDaTra",
             "type": "INTEGER",
-            "kind": "text",
+            "kind": "money",
             "note": ""
           },
           {
@@ -15317,7 +15498,14 @@
             "name": "PhuongThucTT",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "cash",
+              "transfer",
+              "ewallet",
+              "cod",
+              "debt"
+            ]
           },
           {
             "name": "SoHoaDonDienTu",
@@ -15335,7 +15523,7 @@
             "name": "MaKhuyenMai",
             "type": "TEXT",
             "kind": "text",
-            "note": "",
+            "note": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả).",
             "pk": false
           },
           {
@@ -15353,7 +15541,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 83,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15372,7 +15562,14 @@
             "name": "DonViTinh",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "hộp",
+              "vỉ",
+              "chai",
+              "tuýp",
+              "lốc"
+            ]
           },
           {
             "name": "HeSoQuyDoi",
@@ -15384,7 +15581,18 @@
             "name": "GiaDonVi",
             "type": "INTEGER",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "80000",
+              "6000",
+              "8000",
+              "45000",
+              "5000",
+              "5200",
+              "21000",
+              "24000",
+              "48000"
+            ]
           }
         ]
       },
@@ -15395,7 +15603,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 300,
+        "duplicates": 0,
         "fields": [
           {
             "name": "trang_thai_kh",
@@ -15441,7 +15651,11 @@
             "name": "ngay_sinh",
             "type": "TEXT",
             "kind": "date",
-            "note": ""
+            "note": "",
+            "range": [
+              "2000-01-09",
+              "2004-12-03"
+            ]
           },
           {
             "name": "email",
@@ -15518,7 +15732,12 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {
+          "NgayApDung": "**Giá bán**: `lich_su_gia.GiaBanLe` (theo đơn vị cơ bản) áp dụng từ `lich_su_gia.NgayApDung` đến trước lần đổi giá sau của cùng mặt hàng; dòng đầu mỗi mặt hàng là giá lúc bắt đầu dữ liệu.",
+          "GiaBanLe": "**Giá bán**: `lich_su_gia.GiaBanLe` (theo đơn vị cơ bản) áp dụng từ `lich_su_gia.NgayApDung` đến trước lần đổi giá sau của cùng mặt hàng; dòng đầu mỗi mặt hàng là giá lúc bắt đầu dữ liệu."
+        },
         "rows": 109,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15536,14 +15755,18 @@
           {
             "name": "NgayApDung",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "**Giá bán**: `lich_su_gia.GiaBanLe` (theo đơn vị cơ bản) áp dụng từ `lich_su_gia.NgayApDung` đến trước lần đổi giá sau của cùng mặt hàng; dòng đầu mỗi mặt hàng là giá lúc bắt đầu dữ liệu.",
+            "range": [
+              "2025-01-01",
+              "2026-05-21"
+            ]
           },
           {
             "name": "GiaBanLe",
             "type": "INTEGER",
             "kind": "text",
-            "note": ""
+            "note": "**Giá bán**: `lich_su_gia.GiaBanLe` (theo đơn vị cơ bản) áp dụng từ `lich_su_gia.NgayApDung` đến trước lần đổi giá sau của cùng mặt hàng; dòng đầu mỗi mặt hàng là giá lúc bắt đầu dữ liệu."
           }
         ]
       },
@@ -15554,7 +15777,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 2953,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15586,8 +15811,12 @@
           {
             "name": "HanSuDung",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-03-02",
+              "2029-06-05"
+            ]
           },
           {
             "name": "SLNhapQuyDoi",
@@ -15610,7 +15839,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 5,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15652,7 +15883,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 3,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15689,13 +15922,17 @@
           {
             "name": "NgayNhanViec",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2022-08-28",
+              "2024-03-24"
+            ]
           },
           {
             "name": "NgayThoiViec",
             "type": "TEXT",
-            "kind": "text",
+            "kind": "date",
             "note": ""
           }
         ]
@@ -15707,7 +15944,11 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {
+          "TongGiaTriNhap": "**Nhập hàng**: `chi_tiet_nhap.DonGiaNhap` là giá nhập một đơn vị, theo đơn vị nhập của dòng; `phieu_nhap.TongGiaTriNhap` là tổng tiền của cả phiếu nhập."
+        },
         "rows": 540,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15739,20 +15980,27 @@
           {
             "name": "NgayNhapKho",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-01-01",
+              "2026-06-28"
+            ]
           },
           {
             "name": "TinhTrang",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "received"
+            ]
           },
           {
             "name": "TongGiaTriNhap",
             "type": "INTEGER",
             "kind": "text",
-            "note": ""
+            "note": "**Nhập hàng**: `chi_tiet_nhap.DonGiaNhap` là giá nhập một đơn vị, theo đơn vị nhập của dòng; `phieu_nhap.TongGiaTriNhap` là tổng tiền của cả phiếu nhập."
           },
           {
             "name": "DienGiai",
@@ -15769,7 +16017,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 80,
+        "duplicates": 0,
         "fields": [
           {
             "name": "hinh_anh",
@@ -15855,7 +16105,18 @@
             "name": "DonViCoSo",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "viên",
+              "chai",
+              "gói",
+              "hộp",
+              "lọ",
+              "tuýp",
+              "cái",
+              "ống",
+              "miếng"
+            ]
           },
           {
             "name": "GiaBanLe",
@@ -15914,7 +16175,11 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {
+          "SoTienThu": "**Công nợ**: mỗi lần khách trả tiền cho một đơn là một dòng, `thanh_toan.SoTienThu` là số tiền trả lần đó; `don_hang.TongThanhToan` là số khách phải trả cho cả đơn."
+        },
         "rows": 33816,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -15939,20 +16204,33 @@
           {
             "name": "NgayGioThu",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-01-01",
+              "2026-06-28"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:03:04"
+            ]
           },
           {
             "name": "SoTienThu",
             "type": "INTEGER",
-            "kind": "text",
-            "note": ""
+            "kind": "money",
+            "note": "**Công nợ**: mỗi lần khách trả tiền cho một đơn là một dòng, `thanh_toan.SoTienThu` là số tiền trả lần đó; `don_hang.TongThanhToan` là số khách phải trả cho cả đơn."
           },
           {
             "name": "PhuongThuc",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "examples": [
+              "cash",
+              "transfer",
+              "ewallet",
+              "cod"
+            ]
           },
           {
             "name": "DienGiai",
@@ -15969,7 +16247,13 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {
+          "KieuChungTu": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả).",
+          "MaChungTu": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả).",
+          "TonCuoi": "**Tồn kho**: mỗi dòng `the_kho.TonCuoi` là tồn sau lần nhập/bán/trả đó, theo đơn vị cơ bản; tồn tại một thời điểm là tồn ở dòng cuối của sản phẩm tính đến thời điểm đó."
+        },
         "rows": 65514,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -16001,8 +16285,15 @@
           {
             "name": "NgayGioPhatSinh",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-01-01",
+              "2026-06-28"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:00:00"
+            ]
           },
           {
             "name": "LoaiGiaoDich",
@@ -16013,27 +16304,27 @@
           {
             "name": "SLQuyDoi",
             "type": "INTEGER",
-            "kind": "text",
+            "kind": "quantity",
             "note": ""
           },
           {
             "name": "KieuChungTu",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả)."
           },
           {
             "name": "MaChungTu",
             "type": "TEXT",
             "kind": "text",
-            "note": "",
+            "note": "**Mã tham chiếu**: `don_hang.MaCaLam` là mã ca bán hàng; `don_hang.MaKhuyenMai` là mã khuyến mãi áp cho đơn (trống: không áp); `the_kho.KieuChungTu`, `the_kho.MaChungTu` là loại và số của chứng từ gốc của dòng thẻ kho (đơn bán, phiếu nhập hoặc phiếu khách trả).",
             "pk": false
           },
           {
             "name": "TonCuoi",
             "type": "INTEGER",
-            "kind": "text",
-            "note": ""
+            "kind": "quantity",
+            "note": "**Tồn kho**: mỗi dòng `the_kho.TonCuoi` là tồn sau lần nhập/bán/trả đó, theo đơn vị cơ bản; tồn tại một thời điểm là tồn ở dòng cuối của sản phẩm tính đến thời điểm đó."
           }
         ]
       },
@@ -16044,7 +16335,11 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {
+          "BanTheoDon": "**Thuốc**: `thong_tin_thuoc.BanTheoDon` đúng (TRUE/1) là thuốc kê đơn. Hoạt chất ghi không kèm hàm lượng (hàm lượng ở tên hàng); nhiều chất nối bằng \" + \"."
+        },
         "rows": 80,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -16069,7 +16364,7 @@
             "name": "BanTheoDon",
             "type": "INTEGER",
             "kind": "text",
-            "note": ""
+            "note": "**Thuốc**: `thong_tin_thuoc.BanTheoDon` đúng (TRUE/1) là thuốc kê đơn. Hoạt chất ghi không kèm hàm lượng (hàm lượng ở tên hàng); nhiều chất nối bằng \" + \"."
           }
         ]
       },
@@ -16080,7 +16375,9 @@
             "file": "pos.sqlite"
           }
         ],
+        "notes": {},
         "rows": 273,
+        "duplicates": 0,
         "fields": [
           {
             "name": "IDCuaHang",
@@ -16105,8 +16402,15 @@
           {
             "name": "NgayGioTra",
             "type": "TEXT",
-            "kind": "text",
-            "note": ""
+            "kind": "date",
+            "note": "",
+            "range": [
+              "2025-01-05",
+              "2026-06-28"
+            ],
+            "timestamp_examples": [
+              "2025-01-05 08:52:25"
+            ]
           },
           {
             "name": "NguyenNhan",
@@ -16139,8 +16443,104 @@
           "don_hang",
           "MaHoaDon"
         ],
-        "confidence": "sample overlap; one side unique in sample",
+        "confidence": "validated order key",
         "overlap": 1.0
+      },
+      {
+        "left": [
+          "chi_tiet_don_lo",
+          "MaHoaDon"
+        ],
+        "right": [
+          "don_hang",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "thanh_toan",
+          "MaHoaDon"
+        ],
+        "right": [
+          "don_hang",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "tra_hang",
+          "MaHoaDon"
+        ],
+        "right": [
+          "don_hang",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "tra_hang",
+          "MaHoaDon"
+        ],
+        "right": [
+          "thanh_toan",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "chi_tiet_don_lo",
+          "MaHoaDon"
+        ],
+        "right": [
+          "thanh_toan",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 0.9896907216494846
+      },
+      {
+        "left": [
+          "the_kho",
+          "MaChungTu"
+        ],
+        "right": [
+          "don_hang",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 0.98
+      },
+      {
+        "left": [
+          "the_kho",
+          "MaChungTu"
+        ],
+        "right": [
+          "thanh_toan",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 0.96
+      },
+      {
+        "left": [
+          "chi_tiet_don",
+          "MaHoaDon"
+        ],
+        "right": [
+          "thanh_toan",
+          "MaHoaDon"
+        ],
+        "confidence": "validated order key",
+        "overlap": 0.9494949494949495
       },
       {
         "left": [
@@ -16210,18 +16610,6 @@
         "right": [
           "thong_tin_thuoc",
           "MaHangHoa"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "chi_tiet_don_lo",
-          "MaHoaDon"
-        ],
-        "right": [
-          "don_hang",
-          "MaHoaDon"
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
@@ -16429,90 +16817,6 @@
         ],
         "confidence": "sample overlap; check cardinality",
         "overlap": 1.0
-      },
-      {
-        "left": [
-          "lich_su_gia",
-          "MaHangHoa"
-        ],
-        "right": [
-          "thong_tin_thuoc",
-          "MaHangHoa"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "lo_hang",
-          "MaHangHoa"
-        ],
-        "right": [
-          "san_pham",
-          "MaHangHoa"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "lo_hang",
-          "MaHangHoa"
-        ],
-        "right": [
-          "the_kho",
-          "MaHangHoa"
-        ],
-        "confidence": "sample overlap; check cardinality",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "lo_hang",
-          "MaHangHoa"
-        ],
-        "right": [
-          "thong_tin_thuoc",
-          "MaHangHoa"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "nha_cung_cap",
-          "MaNhaCungCap"
-        ],
-        "right": [
-          "phieu_nhap",
-          "MaNhaCungCap"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "san_pham",
-          "MaHangHoa"
-        ],
-        "right": [
-          "the_kho",
-          "MaHangHoa"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
-          "san_pham",
-          "MaHangHoa"
-        ],
-        "right": [
-          "thong_tin_thuoc",
-          "MaHangHoa"
-        ],
-        "confidence": "sample overlap; check cardinality",
-        "overlap": 1.0
       }
     ],
     "warnings": []
@@ -16524,7 +16828,7 @@
         "kinds": {
           "Lô": "text",
           "SL quy ra lẻ": "text",
-          "SL trả (ĐVT cơ bản)": "text",
+          "SL trả (ĐVT cơ bản)": "quantity",
           "No.": "text",
           "Mã hóa đơn": "text"
         },
@@ -16544,7 +16848,9 @@
             "header": 1,
             "rows": 97880,
             "duplicates_removed": 0,
-            "quantity_separators": {}
+            "quantity_separators": {
+              "SL trả (ĐVT cơ bản)": {}
+            }
           }
         ],
         "parse_failures": {},
@@ -16564,20 +16870,9 @@
           },
           {
             "name": "SL trả (ĐVT cơ bản)",
-            "type": "TEXT",
-            "kind": "text",
-            "note": "",
-            "examples": [
-              "0",
-              "1",
-              "2",
-              "3",
-              "4",
-              "6",
-              "5",
-              "10",
-              "7"
-            ]
+            "type": "NUMERIC",
+            "kind": "quantity",
+            "note": ""
           },
           {
             "name": "No.",
@@ -16598,7 +16893,7 @@
         "name": "banhang_chitiethoadon",
         "kinds": {
           "Giá vốn lúc bán": "money",
-          "SL cơ bản": "text",
+          "SL cơ bản": "quantity",
           "Khuyến mãi": "text",
           "Giá niêm yết": "money",
           "Thanh tien": "money",
@@ -16623,21 +16918,22 @@
           "Ma hang",
           "Đ.vị"
         ],
-        "rows": 97033,
+        "rows": 95845,
         "sources": [
           {
             "file": "BanHang_ChiTietHoaDon.xlsx",
             "sheet": "Sheet1",
             "header": 1,
-            "rows": 97033,
-            "duplicates_removed": 0,
+            "rows": 95845,
+            "duplicates_removed": 1188,
             "quantity_separators": {
+              "SL cơ bản": {},
               "Slg": {}
             }
           }
         ],
         "parse_failures": {},
-        "duplicates": 0,
+        "duplicates": 1188,
         "fields": [
           {
             "name": "Giá vốn lúc bán",
@@ -16647,8 +16943,8 @@
           },
           {
             "name": "SL cơ bản",
-            "type": "TEXT",
-            "kind": "text",
+            "type": "NUMERIC",
+            "kind": "quantity",
             "note": ""
           },
           {
@@ -17028,6 +17324,9 @@
             "range": [
               "2025-01-01",
               "2026-05-25"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:09:58"
             ]
           },
           {
@@ -17095,7 +17394,8 @@
             "name": "Order ID",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "pk": false
           },
           {
             "name": "CK",
@@ -17251,7 +17551,8 @@
             "name": "Customer ID",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "pk": false
           }
         ]
       },
@@ -17402,7 +17703,7 @@
       {
         "name": "banhang_phieuthu",
         "kinds": {
-          "Số tiền thu": "text",
+          "Số tiền thu": "money",
           "Mã bill": "text",
           "Phiếu thu": "text",
           "Thời gian thu": "date",
@@ -17432,8 +17733,8 @@
         "fields": [
           {
             "name": "Số tiền thu",
-            "type": "TEXT",
-            "kind": "text",
+            "type": "NUMERIC",
+            "kind": "money",
             "note": ""
           },
           {
@@ -17457,6 +17758,9 @@
             "range": [
               "2025-01-01",
               "2026-05-25"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 06:09:58"
             ]
           },
           {
@@ -17745,7 +18049,8 @@
             "name": "ID SP",
             "type": "TEXT",
             "kind": "text",
-            "note": ""
+            "note": "",
+            "pk": false
           },
           {
             "name": "Đơn vị",
@@ -17782,6 +18087,66 @@
     "joins": [
       {
         "left": [
+          "banhang_bantheolo",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "banhang_hoadon",
+          "Order ID"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "banhang_bantheolo",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "banhang_phieuthu",
+          "Mã bill"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "banhang_chitiethoadon",
+          "Mã giao dịch"
+        ],
+        "right": [
+          "banhang_hoadon",
+          "Order ID"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "banhang_phieuthu",
+          "Mã bill"
+        ],
+        "right": [
+          "banhang_hoadon",
+          "Order ID"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "banhang_chitiethoadon",
+          "Mã giao dịch"
+        ],
+        "right": [
+          "banhang_phieuthu",
+          "Mã bill"
+        ],
+        "confidence": "validated order key",
+        "overlap": 0.9883720930232558
+      },
+      {
+        "left": [
           "banhang_chitiethoadon",
           "Ma hang"
         ],
@@ -17824,6 +18189,18 @@
         "right": [
           "banhang_thuoc",
           "Mã HH"
+        ],
+        "confidence": "sample overlap; one side unique in sample",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "banhang_chitiethoadon",
+          "Ma hang"
+        ],
+        "right": [
+          "ton_kho",
+          "ID SP"
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
@@ -17878,6 +18255,18 @@
       },
       {
         "left": [
+          "banhang_donviquydoi",
+          "Mã sp"
+        ],
+        "right": [
+          "ton_kho",
+          "ID SP"
+        ],
+        "confidence": "sample overlap; one side unique in sample",
+        "overlap": 1.0
+      },
+      {
+        "left": [
           "banhang_hanghoa",
           "ma_sp"
         ],
@@ -17914,6 +18303,18 @@
       },
       {
         "left": [
+          "banhang_hanghoa",
+          "ma_sp"
+        ],
+        "right": [
+          "ton_kho",
+          "ID SP"
+        ],
+        "confidence": "sample overlap; check cardinality",
+        "overlap": 1.0
+      },
+      {
+        "left": [
           "banhang_lichsugia",
           "Mã sản phẩm"
         ],
@@ -17938,6 +18339,18 @@
       },
       {
         "left": [
+          "banhang_lichsugia",
+          "Mã sản phẩm"
+        ],
+        "right": [
+          "ton_kho",
+          "ID SP"
+        ],
+        "confidence": "sample overlap; one side unique in sample",
+        "overlap": 1.0
+      },
+      {
+        "left": [
           "banhang_lohang",
           "Mã món"
         ],
@@ -17946,6 +18359,30 @@
           "Mã HH"
         ],
         "confidence": "sample overlap; one side unique in sample",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "banhang_lohang",
+          "Mã món"
+        ],
+        "right": [
+          "ton_kho",
+          "ID SP"
+        ],
+        "confidence": "sample overlap; one side unique in sample",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "banhang_thuoc",
+          "Mã HH"
+        ],
+        "right": [
+          "ton_kho",
+          "ID SP"
+        ],
+        "confidence": "sample overlap; check cardinality",
         "overlap": 1.0
       },
       {
@@ -17962,30 +18399,6 @@
       },
       {
         "left": [
-          "banhang_bantheolo",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "banhang_phieuthu",
-          "Mã bill"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 0.965
-      },
-      {
-        "left": [
-          "banhang_chitiethoadon",
-          "Mã giao dịch"
-        ],
-        "right": [
-          "banhang_phieuthu",
-          "Mã bill"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 0.953
-      },
-      {
-        "left": [
           "banhang_chitiethoadon",
           "Ma hang"
         ],
@@ -17995,6 +18408,18 @@
         ],
         "confidence": "sample overlap; check cardinality",
         "overlap": 0.943
+      },
+      {
+        "left": [
+          "banhang_hoadon",
+          "Mã KH mua"
+        ],
+        "right": [
+          "banhang_khachhang",
+          "Customer ID"
+        ],
+        "confidence": "sample overlap; one side unique in sample",
+        "overlap": 0.448
       }
     ],
     "warnings": []
@@ -18587,7 +19012,8 @@
             "name": "Customer ID",
             "type": "TEXT",
             "kind": "text",
-            "note": "mã khách (trống nếu khách lẻ)"
+            "note": "mã khách (trống nếu khách lẻ)",
+            "pk": false
           },
           {
             "name": "Khách trả",
@@ -18993,6 +19419,9 @@
             "range": [
               "2025-03-01",
               "2026-07-28"
+            ],
+            "timestamp_examples": [
+              "2025-03-01 07:15:59"
             ]
           },
           {
@@ -19080,8 +19509,32 @@
           "don_hang",
           "Mã chứng từ"
         ],
-        "confidence": "sample overlap; one side unique in sample",
+        "confidence": "validated order key",
         "overlap": 1.0
+      },
+      {
+        "left": [
+          "thanh_toan",
+          "Số CT"
+        ],
+        "right": [
+          "don_hang",
+          "Mã chứng từ"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "chi_tiet_don",
+          "Mã đơn hàng"
+        ],
+        "right": [
+          "thanh_toan",
+          "Số CT"
+        ],
+        "confidence": "validated order key",
+        "overlap": 0.9761904761904762
       },
       {
         "left": [
@@ -19097,27 +19550,15 @@
       },
       {
         "left": [
-          "chi_tiet_don",
-          "Mã đơn hàng"
+          "don_hang",
+          "Customer ID"
         ],
         "right": [
-          "thanh_toan",
-          "Số CT"
+          "khach_hang",
+          "Mã KH"
         ],
         "confidence": "sample overlap; one side unique in sample",
-        "overlap": 0.929
-      },
-      {
-        "left": [
-          "don_hang",
-          "Mã chứng từ"
-        ],
-        "right": [
-          "thanh_toan",
-          "Số CT"
-        ],
-        "confidence": "sample overlap; check cardinality",
-        "overlap": 0.912
+        "overlap": 0.769
       }
     ],
     "warnings": []
@@ -19552,6 +19993,9 @@
             "range": [
               "2025-04-01",
               "2026-09-07"
+            ],
+            "timestamp_examples": [
+              "2025-04-01 07:27:11"
             ]
           },
           {
@@ -20277,6 +20721,30 @@
     "joins": [
       {
         "left": [
+          "danhsachhoadonchitiet",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "danhsachhoadonphongban",
+          "Mã hóa đơn"
+        ],
+        "right": [
+          "danhsachhoadon",
+          "Mã hóa đơn"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
           "baocaotonkho",
           "Mã hàng"
         ],
@@ -20337,18 +20805,6 @@
       },
       {
         "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonchitiet",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 1.0
-      },
-      {
-        "left": [
           "danhsachhoadonchitiet",
           "Mã hàng"
         ],
@@ -20382,18 +20838,6 @@
         ],
         "confidence": "sample overlap; check cardinality",
         "overlap": 0.98
-      },
-      {
-        "left": [
-          "danhsachhoadon",
-          "Mã hóa đơn"
-        ],
-        "right": [
-          "danhsachhoadonphongban",
-          "Mã hóa đơn"
-        ],
-        "confidence": "sample overlap; check cardinality",
-        "overlap": 0.894
       },
       {
         "left": [
@@ -21086,6 +21530,9 @@
             "range": [
               "2025-01-01",
               "2026-08-14"
+            ],
+            "timestamp_examples": [
+              "2025-01-01 07:22:55"
             ]
           }
         ]
@@ -21148,6 +21595,18 @@
       {
         "left": [
           "chi_tiet_don",
+          "Số CT"
+        ],
+        "right": [
+          "thanh_toan",
+          "Mã giao dịch"
+        ],
+        "confidence": "validated order key",
+        "overlap": 1.0
+      },
+      {
+        "left": [
+          "chi_tiet_don",
           "Mã hàng bán"
         ],
         "right": [
@@ -21168,18 +21627,6 @@
         ],
         "confidence": "sample overlap; one side unique in sample",
         "overlap": 1.0
-      },
-      {
-        "left": [
-          "chi_tiet_don",
-          "Số CT"
-        ],
-        "right": [
-          "thanh_toan",
-          "Mã giao dịch"
-        ],
-        "confidence": "sample overlap; one side unique in sample",
-        "overlap": 0.951
       },
       {
         "left": [

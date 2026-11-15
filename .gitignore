@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments & secrets
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Model weights, datasets & large archives
+models/
+training_code/data/
+*.gguf
+*.part
+*.bin
+*.safetensors
+*.zip
+*.tar
+*.tar.gz
+*.tar.gz.md5
+
+# Runtime caches, inference outputs & temp files
+.datamate_cache/
+result/
+result_*/
+results/
+datamate_runtime/
+datamate_benchmarks/
+datamate_threshold_validation/
+*.tmp
+
+# Jupyter, IDE & OS
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

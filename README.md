@@ -23,6 +23,8 @@ Nhánh `catalog_evidence` chỉ trả `unanswerable` cho trường hợp có b�
 
 Nếu tên cột khác tên thường gặp, pipeline dùng mô tả cột trong README để tìm các vai trò như ngày bán, mã đơn, trạng thái và thành tiền dòng hàng. Với câu hỏi trung bình mỗi đơn, pipeline cộng thành tiền từng đơn rồi mới lấy trung bình. Khi chọn dòng hàng từ bảng riêng, pipeline kiểm tra khóa nối trong catalog và lọc theo tập mã đơn hợp lệ. Sổ bán không có mã đơn vẫn có thể tính tổng doanh thu theo dòng. Bộ kiểm tra ngày yêu cầu Qwen sửa khi dùng tên cột ngày như một chuỗi SQL.
 
+Bản sao SQLite dùng để truy vấn chuẩn hóa ngày văn bản và loại các dòng hàng trùng hệt có cùng mã đơn và số dòng. Với Excel/CSV, bộ nạp làm tương tự khi nhận diện được hai khóa này. Catalog xác minh thêm khóa đơn khác tên giữa các bảng và đưa tên cột thật vào prompt. Quy tắc bán hàng xử lý trạng thái giao thất bại và đổi trả. Các truy vấn lọc theo hoạt chất so khớp toàn bộ giá trị trong danh mục, theo đúng rulebook về thuốc phối hợp.
+
 ### Output để phân tích
 
 Mỗi benchmark Training tạo các file sau trong `/kaggle/working/datamate_benchmarks/<phase>/`.
@@ -104,6 +106,3 @@ gzip -dc "zaic2026_datamate_${TEAM}.tar.gz" | wc -c
 ## Phạm vi đã xác minh
 
 Xem `verification/public_summary.json`, `verification/train_summary.json` và `verification/cpu_smoke.json`. CPU smoke chạy SQL kiểm soát trên dữ liệu thật và đi qua prompt, repair, JSONL và log. Cần chạy Qwen thực trên Kaggle, rồi build và test Docker offline trên máy GPU trước khi chốt bài nộp. Pipeline quản lý tiến trình local. Mỗi câu có một lượt phục hồi kết nối, gồm khởi động lại tiến trình và thử lại truy vấn. Nếu vẫn lỗi, pipeline ghi `abstain` và chuyển sang câu sau. Bản Docker dành 5 phút cuối của giới hạn 6 giờ để ghi kết quả còn lại. Cột số lượng mơ hồ mà không suy ra được dấu phân cách được ghi NULL và báo trong audit. Các quy tắc ngữ nghĩa như công nợ, dòng voucher, khuyến mãi, hoàn đơn và cách nối bảng dựa vào schema và README. Điểm benchmark sẽ cho biết cần sửa nhóm nào tiếp.
-#   D a t a M a t e  
- #   D a t a M a t e  
- 

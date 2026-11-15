@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from datamate.business_sql import sales_totals
+from datamate.data import Dataset, build_business
 from datamate.inference import answer_kind, clean_generated_sql, execute_sql, infer
 from datamate.periods import DatePredicateError, validate_date_predicates
 from datamate.sql_rules import month_to_date_periods, product_hints, real_percent_sql, sales_query
@@ -205,6 +206,35 @@ class SalesRules(unittest.TestCase):
         with self.assertRaisesRegex(DatePredicateError, "text literal"):
             validate_date_predicates(q, "SELECT SUM(Net) FROM shop WHERE date('Day') = '2025-12-02'", catalog)
         validate_date_predicates(q, """SELECT SUM(Net) FROM shop WHERE date("Day") = date('2025-12-02')""", catalog)
+
+    def test_native_receipts_normalize_mixed_dates_and_remove_only_exact_line_copies(self):
+        root = Path(self.temp.name)
+        source = root / "data" / "sample"
+        source.mkdir(parents=True)
+        (root / "questions.jsonl").write_text("", encoding="utf-8")
+        native = source / "pos.sqlite"
+        (source / "README.md").write_text(
+            "- **Dòng hàng**: `detail.TriGia` là thành tiền dòng hàng.\n",
+            encoding="utf-8")
+        with sqlite3.connect(native) as con:
+            con.executescript("""
+                CREATE TABLE receipt (MaHoaDon TEXT, NgayLap TEXT, TinhTrang TEXT, TongTienHang INTEGER);
+                INSERT INTO receipt VALUES ('o1','2025-12-01','completed',18),
+                    ('o2','1 thg 12 2025','completed',20), ('o3','01/12/2025','Không giao được',50),
+                    ('o4','01/12/2025','Đổi trả',80);
+                CREATE TABLE detail (MaHoaDon TEXT REFERENCES receipt(MaHoaDon),
+                    SoThuTu INTEGER, MaHangHoa TEXT, TriGia INTEGER);
+                INSERT INTO detail VALUES ('o1',1,'p',9),('o1',1,'p',9),('o1',2,'p',9),
+                    ('o2',1,'p',20),('o3',1,'p',50),('o4',1,'p',80);
+            """)
+        with Dataset(root) as dataset:
+            db, catalog, readme = build_business(dataset, "sample", root / "work")
+        self.assertEqual(execute_sql(native, "SELECT COUNT(*) FROM detail")["rows"], [[6]])
+        self.assertEqual(execute_sql(db, "SELECT COUNT(*) FROM detail")["rows"], [[5]])
+        self.assertEqual(execute_sql(db, "SELECT COUNT(*) FROM receipt WHERE NgayLap='2025-12-01'")["rows"], [[4]])
+        q = {"id": "sample", "question": "Ngày hôm nay cửa hàng bán được bao nhiêu tiền?", "as_of_date": "2025-12-01"}
+        answer, _ = infer(q, db, catalog, readme, None, None)
+        self.assertEqual(answer["answer"], 38)
 
     def test_rule_result_is_identical_when_logprob_enabled(self):
         q = {"id": "fixture", "question": "Tiền bán Mat hang thu tháng 12/2025 là bao nhiêu?",

@@ -22,7 +22,7 @@ Chỉ dùng tên bảng/cột trong schema. Đặt identifier trong dấu nháy 
 Xác định đơn vị của mỗi dòng. Khi thông tin cấp đơn lặp trên dòng hàng, gom đúng một lần theo mã đơn trước khi cộng tiền cấp đơn. Khi nối bảng thanh toán hoặc hàng trả có nhiều dòng, gộp theo mã đơn trước nếu cần. Doanh thu dùng tiền hàng sau giảm theo dòng, loại toàn bộ đơn hủy và đơn có trả hàng kể cả trả một phần. Phí ship, thuế, voucher cấp đơn và tiền thu nợ không phải doanh thu.
 Chỉ chọn cột đáp án. number/percent/date/boolean/string cần 1 hàng 1 cột; boolean dùng 0/1; percent là 12.4 cho 12.4%; date dùng YYYY-MM-DD hoặc YYYY-MM. list cần một cột theo thứ tự, hoặc một hàng cho các giá trị khác loại. table cần tên đối tượng trước rồi các số đo theo thứ tự hỏi. Dùng ORDER BY rõ ràng. Nếu đã có cột số lượng quy đổi thì ưu tiên cột đó. Nếu cần tự quy đổi và schema có unit_factors, nối theo cả tên sản phẩm lẫn đơn vị, nhân số lượng với factor. Kiểm tra đơn vị trước khi cộng. Dùng COALESCE(SUM(...),0) cho tổng trên kỳ có dữ liệu khi không có giao dịch thỏa điều kiện. Thiếu dữ liệu khác với 0. Nếu dòng cần tính có số lượng NULL vì định dạng nguồn mơ hồ, dùng cột quy đổi đáng tin cậy hoặc abstain khi không thể tính đủ. SQLite không có ILIKE, dùng lower()/LIKE hoặc vn_key(text) để tìm chuỗi không dấu; trả tên gốc. Có thể dùng vn_money(text), vn_quantity(text), vn_date(text) khi cột còn chứa giá trị thô. Không tự tính bằng văn bản.
 Công thức phần trăm: dùng 100.0 * tử_số / NULLIF(mẫu_số, 0); tăng trưởng dùng (kỳ mới - kỳ trước) / kỳ trước. Tỉ lệ huỷ dùng số đơn huỷ chia cho mọi đơn; đơn trả không phải đơn huỷ.
-Dùng vn_order_status(cột_trạng_thái) để nhận diện 'canceled' và 'returned'; loại cả mã đơn nếu có trả một phần. Xếp hạng khách dùng mã khách nếu có, bỏ mã trống; nếu chỉ có tên, bỏ khách lẻ bằng vn_known_customer(cột_tên).
+Dùng vn_order_status(cột_trạng_thái) để nhận diện 'canceled', 'returned' và 'failed'. Loại đơn hủy, đổi/trả hoặc giao thất bại khỏi số liệu bán hàng; loại cả mã đơn nếu có trả một phần. Xếp hạng khách dùng mã khách nếu có, bỏ mã trống; nếu chỉ có tên, bỏ khách lẻ bằng vn_known_customer(cột_tên).
 Nếu câu hỏi nêu tên sản phẩm, phải lọc đúng sản phẩm trong WHERE hoặc JOIN. Tên cột và tên bảng lấy nguyên văn từ schema SQLite; tên file trong README chỉ để tra nguồn.
 Hỏi một tên hoặc một tháng thì SELECT đúng một cột và một dòng. Hỏi danh sách tên thì chỉ SELECT cột tên, có thể ORDER BY cột số đo không xuất ra. Hỏi số lượng đối tượng đạt điều kiện thì COUNT bên ngoài GROUP BY/HAVING. Chỉ chọn table khi câu hỏi yêu cầu các cột cho từng đối tượng. Với câu hỏi có tăng liên tục không, SQL trả 0/1."""
 
@@ -182,8 +182,10 @@ def sales_schema_hint(catalog):
             detail = lines[0]
             order_key = f"{order[0]}.{order[1]['order']}"
             amount = detail[1]["line_amount"] or detail[1]["amount"]
+            join = f" Nối {order_key} = {detail[0]}.{detail[1]['order']}." if detail[0] != order[0] else ""
+            status = f" Trạng thái đơn {order[0]}.{order[1]['status']}."
             return (f"Khóa đơn {order_key}; ngày bán {order[0]}.{order[1]['date']}; "
-                    f"thành tiền dòng hàng {detail[0]}.{amount}. "
+                    f"thành tiền dòng hàng {detail[0]}.{amount}.{join}{status} "
                     "Giá trị trung bình một đơn: SUM thành tiền theo khóa đơn, rồi AVG các tổng.")
     sources = [t for t in scoped_tables(catalog) if all(t[1][r] for r in ("date", "status", "product", "line_amount"))]
     if len(sources) == 1 and not sources[0][1]["order"]:

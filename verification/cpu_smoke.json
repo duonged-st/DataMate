@@ -3,7 +3,7 @@
   "businesses": 14,
   "answers_validated": 14,
   "logs_validated": 14,
-  "model_calls_simulated": 14,
+  "model_calls_simulated": 9,
   "checks": [
     "SQLite readonly authorization",
     "valid BTC output",

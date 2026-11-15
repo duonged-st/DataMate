@@ -7,23 +7,24 @@ from contextlib import closing
 from functools import lru_cache
 
 from .data import open_readonly, quote
-from .normalize import key
+from .normalize import identifier_key, key
 
 
 SQL_TOKEN = re.compile(r"""'(?:''|[^'])*'|"(?:""|[^"])*"|`(?:``|[^`])*`|\[[^\]]*\]|--[^\n]*|/\*[\s\S]*?\*/|/""")
 PRODUCT_FIELDS = {"ten san pham", "ten hang", "ten hang hoa", "ten mat hang", "mat hang",
-                  "ten mon", "ten hang ban", "san pham", "ten sp", "hang ban"}
+                  "ten mon", "ten hang ban", "san pham", "ten sp", "hang ban", "ten goi", "mon", "hang hoa"}
 SALES_ROLES = {
-    "order": ("ma don hang", "ma hoa don", "ma don", "ma bill"),
-    "date": ("ngay dat hang", "ngay dat", "ngay ban", "thoi gian"),
-    "status": ("trang thai don hang", "trang thai don", "trang thai"),
-    "product": ("ten san pham", "ten hang", "ten hang hoa", "ten mat hang", "mat hang", "hang ban", "ten sp"),
+    "order": ("ma don hang", "ma hoa don", "ma don", "ma bill", "order id", "don so", "ma giao dich"),
+    "date": ("ngay dat hang", "ngay dat", "ngay ban", "thoi gian", "ngay lap", "ngay hd"),
+    "status": ("trang thai don hang", "trang thai don", "trang thai", "tinh trang", "trang thai giao"),
+    "product": ("ten san pham", "ten hang", "ten hang hoa", "ten mat hang", "mat hang", "hang ban", "ten sp",
+                "mon", "ten goi", "hang hoa"),
     "amount": ("thanh tien", "tong tien"),
     "order_amount": ("tong tien hang",),
-    "unit": ("don vi tinh", "dvt", "don vi", "donvi"),
-    "quantity": ("so luong san pham", "so luong", "sl ban", "soluong"),
-    "customer": ("ten khach hang", "khach hang", "ten khach"),
-    "customer_id": ("ma kh", "ma khach hang", "ma khach"),
+    "unit": ("don vi tinh", "dvt", "don vi", "donvi", "d vi", "dv"),
+    "quantity": ("so luong san pham", "so luong", "sl ban", "soluong", "sl", "slg", "s l"),
+    "customer": ("ten khach hang", "khach hang", "ten khach", "ten kh", "khach hang ten"),
+    "customer_id": ("ma kh", "ma khach hang", "ma khach", "ma kh mua", "customer id"),
 }
 ROLE_NOTES = {
     "order": r"ma (?:cua )?(?:don(?: hang| dat hang)?|hoa don|bill)\b",
@@ -107,7 +108,10 @@ def product_hints(path, catalog, question):
     result = []
     for table in catalog["tables"]:
         for field in table["fields"]:
-            if key(field["name"]) not in PRODUCT_FIELDS and not re.match(ROLE_NOTES["product"], key(field.get("note"))):
+            name = identifier_key(field["name"])
+            if name == "ten goi" and not cols_for(table)["product"]:
+                continue
+            if name not in PRODUCT_FIELDS and not re.match(ROLE_NOTES["product"], key(field.get("note"))):
                 continue
             matched = [(table["name"], field["name"], value)
                        for normalized, value in column_values(path, table["name"], field["name"])
@@ -118,9 +122,11 @@ def product_hints(path, catalog, question):
 
 def order_status(value):
     text = key(value)
-    if re.search(r"\b(?:huy|cancelled|canceled)\b", text):
+    if re.search(r"\b(?:huy|cancel|cancelled|canceled)\b", text):
         return "canceled"
-    if re.search(r"\b(?:hoan tra|hoan hang|tra hang|tra lai|tra mot phan|hang tra ve|returned|refunded)\b", text) or text == "da tra":
+    if re.search(r"\b(?:khong giao duoc|giao (?:hang )?that bai|delivery failed|undelivered)\b", text):
+        return "failed"
+    if re.search(r"\b(?:hoan tra|hoan hang|doi tra|tra hang|tra lai|tra mot phan|hang tra ve|returned|refunded)\b", text) or text == "da tra":
         return "returned"
     return "other"
 
@@ -145,9 +151,10 @@ def named_rollup(hints):
 def role_column(table, role, aliases):
     fields = table["fields"]
     by_name = {key(field["name"]): field["name"] for field in fields}
+    aliases_by_words = {identifier_key(field["name"]): field["name"] for field in fields}
     for alias in aliases:
-        if alias in by_name:
-            return quote(by_name[alias])
+        if alias in by_name or alias in aliases_by_words:
+            return quote(by_name.get(alias) or aliases_by_words[alias])
     pattern = ROLE_NOTES.get(role)
     if pattern:
         matches = [field for field in fields if re.match(pattern, key(field.get("note")))]
@@ -158,8 +165,11 @@ def role_column(table, role, aliases):
 
 def cols_for(table):
     columns = {role: role_column(table, role, aliases) for role, aliases in SALES_ROLES.items()}
+    if columns["product"] and identifier_key(columns["product"]) == "ten goi":
+        if not role_column(table, "item", ("ma hang hoa", "ma hang", "ma san pham", "ma sku")):
+            columns["product"] = None
     if columns["amount"] is None:
-        columns["amount"] = role_column(table, "amount", ("thanh tien d", "amount"))
+        columns["amount"] = role_column(table, "amount", ("thanh tien d", "amount", "tri gia"))
     return columns
 
 
@@ -220,7 +230,7 @@ def sales_query(q, catalog, hints):
     if not dates:
         return None
     canceled = f"vn_order_status({status}) = 'canceled'"
-    invalid = f"vn_order_status({status}) IN ('canceled', 'returned')"
+    invalid = f"vn_order_status({status}) IN ('canceled', 'returned', 'failed')"
     valid = f"{order} IS NOT NULL AND {order} NOT IN (SELECT {order} FROM {source} WHERE {order} IS NOT NULL AND {invalid})"
     def within(start, end):
         if end.isoformat() < dates[0] or start.isoformat() > dates[1]:

@@ -17,6 +17,12 @@ def key(value):
     return re.sub(r"[^a-z0-9]+", " ", fold(value)).strip()
 
 
+def identifier_key(value):
+    """Normalize column names while retaining word boundaries in POS identifiers."""
+    name = re.sub(r"([A-Z])([A-Z][a-z])", r"\1 \2", str(value))
+    return key(re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", name))
+
+
 def slug(value):
     return key(value).replace(" ", "_")
 
@@ -27,13 +33,13 @@ MONEY = set("""
     tong tien hang|tien hang truoc giam|tong sau giam gia|tong tien phieu|
     gia|dg|don gia|don gia d|gia 1 dv|gia san pham|gia von|gia von luc ban|
     gia von hien tai|gia ban|gia le|gia hien tai|gia niem yet|gia nhap|gia cu|gia moi|
-    gia thu|gia tri|tien thu|so tien|da thu|da tra|no|cong no|con no|khach da tra|
+    gia thu|gia tri|tien thu|tien ban|so tien|so tien thu|so tien thanh toan|da thu|da tra|no|cong no|con no|khach da tra|
     khach tra|da gop|gop thang|tra truoc|bot|thu may cu|tien giam|giam gia|
     giam d|ck|giam gia hd|phi ship|phi van chuyen|tien chi|can tra ncc
     """.replace("\n", "").split("|"))
 MONEY = {x.strip() for x in MONEY}
 QUANTITY = set("""
-    sl|s l|slg|sl ban|sl nhap|sl quy doi|sl dv co ban|sl le|soluong|sluong|so luong|
+    sl|s l|slg|sl ban|sl nhap|sl quy doi|sl dv co ban|sl co ban|sl le|sl tra quy doi|sl tra dvt co ban|soluong|sluong|so luong|
     so luong san pham|so luong hang|so luong quy doi|so luong le|so luong nhap|
     so luong giao|so luong tra|sl thuc giao|quy ra dv le|ton kho|ton cuoi|ton cuoi ky|
     ton thuc|so khach|so ky|luot giao|ky han
@@ -42,8 +48,9 @@ QUANTITY = {x.strip() for x in QUANTITY}
 DATE_PREFIX = ("ngay", "date", "thoi gian", "gio", "han su dung", "han tra", "tu ngay", "den ngay", "sinh nhat")
 ORDER_KEY = {
     "ma don", "ma don hang", "ma hoa don", "ma hoa don ban", "ma bill", "bill",
-    "don so", "so don", "so ct", "ma chung tu", "so hoa don", "hd",
+    "don so", "so don", "so ct", "ma chung tu", "so hoa don", "hd", "order id", "ma giao dich",
 }
+LINE_KEY = {"stt", "dong", "so dong", "so thu tu", "tt dong", "line no", "line number"}
 ORDER_META = {
     "tt don", "note", "nhan vien ban", "ma nv ban", "tong tien hang", "tong tien",
     "giam gia hd", "hinh thuc thanh toan", "thanh toan bang", "so khach",
@@ -58,7 +65,7 @@ ORDER_META = {
 
 
 def column_kind(name, description=""):
-    k = key(name)
+    k = identifier_key(name)
     d = key(description)
     if k in ORDER_KEY or k.startswith(("ma ", "so phieu", "so chung tu")) or k in {"stt", "imei", "phone", "sdt", "barcode"} or str(name).strip().casefold() == "no.":
         return "text"

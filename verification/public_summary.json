@@ -5,8 +5,9 @@
   "source_files": 80,
   "xlsx_sheets": 136,
   "sqlite_tables": 79,
-  "rows": 1321433,
+  "rows": 1320083,
   "unmapped_sources": [],
   "parse_failures": [],
-  "loader_warnings": 0
+  "loader_warnings": 0,
+  "duplicates_removed": 7162
 }

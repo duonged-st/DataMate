@@ -15,11 +15,11 @@ from pathlib import Path, PurePosixPath
 
 import openpyxl
 
-from .normalize import ORDER_KEY, ORDER_META, column_kind, key, normalize, quantity_separators, slug, year_hint
+from .normalize import LINE_KEY, ORDER_KEY, ORDER_META, as_date, column_kind, identifier_key, key, normalize, quantity_separators, slug, year_hint
 from .units import make_unit_table
 
 DATA_EXTENSIONS = {".csv", ".xlsx", ".sqlite", ".db", ".sqlite3"}
-CACHE_VERSION = "v5.8"
+CACHE_VERSION = "v5.11"
 
 
 def quote(name):
@@ -131,6 +131,57 @@ def column_notes(readme, filename, sheet, headers):
             if len(texts) == 1:
                 result[name] = texts[0]
     return result
+
+
+def native_notes(con, table, readme):
+    headers = [column[1] for column in con.execute(f"PRAGMA table_info({quote(table)})")]
+    notes = column_notes(readme, table, "", headers)
+    for line in readme.splitlines():
+        for name in headers:
+            if f"`{table}.{name}`".casefold() in line.casefold() and name not in notes:
+                notes[name] = line.lstrip("- ").strip()
+    return notes
+
+
+def normalize_native_dates(con, table, columns):
+    target = quote(table)
+    for name, note in columns.items():
+        if column_kind(name, note) != "date":
+            continue
+        col = quote(name)
+        raw = con.execute(f"SELECT DISTINCT {col} FROM {target} WHERE typeof({col}) = 'text'"
+                          f" AND {col} NOT GLOB '????-??-??*' AND {col} <> ''").fetchall()
+        changes = []
+        for value, in raw:
+            date_value = as_date(value)
+            if date_value and date_value != value:
+                changes.append((date_value, value))
+        if changes:
+            # Apply the date map in one pass, retaining values we cannot parse.
+            con.execute("CREATE TEMP TABLE IF NOT EXISTS date_map (raw TEXT PRIMARY KEY, iso TEXT)")
+            con.executemany("INSERT INTO temp.date_map VALUES (?, ?)", ((v, n) for n, v in changes))
+            con.execute(f"UPDATE {target} SET {col} = (SELECT iso FROM temp.date_map WHERE raw = {target}.{col})"
+                        f" WHERE {col} IN (SELECT raw FROM temp.date_map)")
+            con.execute("DELETE FROM temp.date_map")
+
+
+def deduplicate_native_lines(con, table, columns):
+    order_key = next((quote(c) for c in columns if identifier_key(c) in ORDER_KEY), None)
+    line_key = next((quote(c) for c in columns if identifier_key(c) in LINE_KEY or c.casefold() == "no."), None)
+    if not order_key or not line_key:
+        return 0
+    # Keep repeated sales with different line IDs and conflicting rows with the same ID.
+    try:
+        con.execute(f"SELECT _rowid_ FROM {quote(table)} LIMIT 0")
+    except sqlite3.OperationalError:
+        return 0
+    if any(c.casefold() == "_rowid_" for c in columns):
+        return 0
+    source = quote(table)
+    has_key = f"trim({order_key}) <> '' AND trim({line_key}) <> ''"
+    group = ", ".join(map(quote, columns))
+    return con.execute(f"DELETE FROM {source} WHERE {has_key} AND _rowid_ NOT IN "
+                       f"(SELECT MIN(_rowid_) FROM {source} WHERE {has_key} GROUP BY {group})").rowcount
 
 
 def is_filled(value):
@@ -295,7 +346,8 @@ class CatalogBuilder:
         phone_lines = "imei" in labels and "stt" in labels and sales_lines
         if order is None and phone_lines:
             order = labels.index("stt")
-        line_id = next((i for i, k in enumerate(labels) if (k in {"stt", "dong", "so dong"} or columns[i].casefold() == "no.") and i != order), None)
+        line_id = next((i for i, c in enumerate(columns) if i != order
+                        and (identifier_key(c) in LINE_KEY or c.casefold() == "no.")), None)
         sales_lines = sales_lines and (any(k in ORDER_META for k in labels) or line_id is not None)
         metadata = [i for i, k in enumerate(labels) if k in ORDER_META and i != order] if sales_lines else []
         item = next((i for i, k in enumerate(labels) if k in {"ten san pham", "ten hang", "ten hang hoa", "hang ban", "hang", "hang hoa", "ten sp", "mat hang"}), None)
@@ -378,14 +430,14 @@ def profile(con, table):
     key_candidates = {}
     for _, column, sql_type, _, _, pk in schema:
         col = quote(column)
-        ck = key(column)
+        ck = identifier_key(column)
         note = table.get("notes", {}).get(column, "")
         kind = table.get("kinds", {}).get(column) or column_kind(column, note)
         field = {"name": column, "type": sql_type or kind.upper(), "kind": kind, "note": note}
         if kind == "quantity" and table.get("parse_failures", {}).get(column):
             field["missing_quantities"] = table["parse_failures"][column]
         is_identifier = (pk or ck in ORDER_KEY or ck in {"stt", "imei", "phone", "sdt", "barcode"}
-                         or ck.startswith(("ma ", "so phieu")) or (column[:2] == "Ma" and column[2:3].isupper())
+                         or ck.startswith(("ma ", "so phieu")) or ck in {"order id", "customer id", "id sp"}
                          or bool(re.match(r"ma (?:don|hoa don|hang|mat hang|san pham|khach)\b", key(note))))
         if is_identifier:
             field["pk"] = bool(pk)
@@ -441,7 +493,27 @@ def join_hints(con, catalogs, candidates):
             confidence = "sample overlap; one side unique in sample" if au != bu else "sample overlap; check cardinality"
             relationships.append({"left": [left, lc], "right": [right, rc],
                                   "confidence": confidence, "overlap": round(overlap, 3)})
-    return sorted(relationships, key=lambda r: -r.get("overlap", 1))[:32]
+    order_keys = ORDER_KEY | {"order id", "ma giao dich"}
+    for source, col, sample, _ in profiles:
+        if identifier_key(col) not in order_keys or len(sample) < 3:
+            continue
+        for target, pk, target_sample, target_unique in profiles:
+            if source == target or not target_unique or identifier_key(pk) not in order_keys or len(target_sample) < 3:
+                continue
+            markers = ", ".join("?" for _ in sample)
+            matched = con.execute(
+                f"SELECT COUNT(*) FROM (SELECT {quote(pk)} FROM {quote(target)} WHERE {quote(pk)} IN ({markers})"
+                f" GROUP BY {quote(pk)} HAVING COUNT(*)=1)", tuple(sample)).fetchone()[0]
+            if matched / len(sample) >= 0.9:
+                relationships.append({"left": [source, col], "right": [target, pk],
+                                      "confidence": "validated order key", "overlap": matched / len(sample)})
+    relationships.sort(key=lambda r: (
+        r["confidence"] != "declared FK", r["confidence"] != "validated order key", -r.get("overlap", 1)))
+    chosen = {}
+    for relation in relationships:
+        endpoints = frozenset((tuple(relation["left"]), tuple(relation["right"])))
+        chosen.setdefault(endpoints, relation)
+    return list(chosen.values())[:32]
 
 
 def open_readonly(path):
@@ -472,6 +544,7 @@ def build_business(dataset, business, work):
     with closing(sqlite3.connect(tmp)) as con, con:
         con.execute("PRAGMA temp_store=MEMORY")
         native_catalog = [{"name": t, "sources": [{"file": display_name(native[0])}],
+                           "notes": native_notes(con, t, readme),
                            "rows": con.execute(f"SELECT COUNT(*) FROM {quote(t)}").fetchone()[0]}
                           for t in table_names(con)] if native else []
         builder = CatalogBuilder(con, readme, [t["name"].casefold() for t in native_catalog], warnings)
@@ -486,10 +559,23 @@ def build_business(dataset, business, work):
                     con.execute(f"CREATE TABLE {quote(name)} ({', '.join(quote(c) for c in columns)})")
                     vals = other.execute(f"SELECT {', '.join(quote(c) for c in columns)} FROM {quote(table)}")
                     count = con.executemany(f"INSERT INTO {quote(name)} VALUES ({','.join('?' for _ in columns)})", vals).rowcount
-                    native_catalog.append({"name": name, "sources": [{"file": display_name(source)}], "rows": count})
+                    native_catalog.append({"name": name, "sources": [{"file": display_name(source)}], "rows": count,
+                                           "notes": native_notes(other, table, readme)})
             extra.unlink()
         for fragment in fragments(dataset, data_files, readme, warnings):
             builder.add(fragment)
+        for table in native_catalog:
+            name = table["name"]
+            if con.execute("SELECT type FROM sqlite_schema WHERE name=?", (name,)).fetchone()[0] != "table":
+                continue
+            if con.execute("SELECT 1 FROM sqlite_schema WHERE type='trigger' AND tbl_name=?", (name,)).fetchone():
+                continue
+            columns = {record[1]: table["notes"].get(record[1], "")
+                       for record in con.execute(f"PRAGMA table_info({quote(name)})")}
+            normalize_native_dates(con, name, columns)
+            dropped = deduplicate_native_lines(con, name, columns)
+            table["duplicates"] = dropped
+            table["rows"] -= dropped
         tables = native_catalog + list(builder.groups.values())
         if not tables:
             raise ValueError("No usable tables were found")
